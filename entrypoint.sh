@@ -18,27 +18,25 @@ EOF
     git config --global user.name "GitHub Actions"
 }
 
+echo "INPUT_BRANCH value: $INPUT_BRANCH";
+
+# Switch to branch from current Workflow run
+git checkout $INPUT_BRANCH
+    
 # Adds untracked files with an intend to add so that they show up on `git diff`
-git add -N .
+if [ -z ${INPUT_FILE_PATTERN+x} ];
+then
+    git add -N .
+else
+    echo "INPUT_FILE_PATTERN value: $INPUT_FILE_PATTERN";
+    git add -N $INPUT_FILE_PATTERN
+fi
 
 # This section only runs if there have been file changes
 echo "Checking for uncommitted changes in the git working tree."
 if ! git diff --quiet
 then
     git_setup
-
-    echo "INPUT_BRANCH value: $INPUT_BRANCH";
-
-    # Switch to branch from current Workflow run
-    git checkout $INPUT_BRANCH
-
-    if [ -z ${INPUT_FILE_PATTERN+x} ];
-    then
-        git add .
-    else
-        echo "INPUT_FILE_PATTERN value: $INPUT_FILE_PATTERN";
-        git add $INPUT_FILE_PATTERN
-    fi
 
     git commit -m "$INPUT_COMMIT_MESSAGE" --author="$GITHUB_ACTOR <$GITHUB_ACTOR@users.noreply.github.com>"
 
