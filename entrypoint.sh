@@ -18,6 +18,8 @@ EOF
     git config --global user.name "GitHub Actions"
 }
 
+# Adds untracked files with an intend to add so that they show up on `git diff`
+git add -N .
 
 # This section only runs if there have been file changes
 echo "Checking for uncommitted changes in the git working tree."
