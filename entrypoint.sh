@@ -18,15 +18,10 @@ EOF
     git config --global user.name "GitHub Actions"
 }
 
-echo "INPUT_BRANCH value: $INPUT_BRANCH";
+echo "INPUT_BRANCH value: ${INPUT_BRANCH:=master}";
 
 # Switch to branch from current Workflow run
-if [ -z ${INPUT_BRANCH} ];
-then 
-  git checkout master
-else 
-  git checkout $INPUT_BRANCH
-fi
+git checkout $INPUT_BRANCH
     
 # Adds untracked files with an intend to add so that they show up on `git diff`
 if [ -z ${INPUT_FILE_PATTERN+x} ];
