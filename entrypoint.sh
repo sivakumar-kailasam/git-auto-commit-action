@@ -21,7 +21,12 @@ EOF
 echo "INPUT_BRANCH value: $INPUT_BRANCH";
 
 # Switch to branch from current Workflow run
-git checkout $INPUT_BRANCH
+if [ -z ${INPUT_BRANCH} ];
+then 
+  git checkout master
+else 
+  git checkout $INPUT_BRANCH
+fi
     
 # Adds untracked files with an intend to add so that they show up on `git diff`
 if [ -z ${INPUT_FILE_PATTERN+x} ];
